@@ -5,32 +5,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Drag Game</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-
-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
     <header>
         <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-            <a class="navbar-brand" href="#">Refresh Page</a>
+            <a class="navbar-brand" href="#" onclick="location.reload()">Refresh Page</a>
         </nav>
     </header>
 
     <div class="container mt-4">
-        <!--Intro info area something idk-->
-        <h1 class="text-center mb-4">Drag the flower to Earn Points</h1>
-
-        <p class="text-center lead">Move the flower around the play area to increase your score <br>
+        <!-- Intro -->
+        <h1 class="text-center mb-4">Drag the Flower to Earn Points</h1>
+        <p class="text-center lead">Move the Flower around the play area to increase your score.<br>
             Different zones may give more points.</p>
-        <!--Game Area-->
+
+        <!-- Game Area -->
         <div class="row mt-4">
             <div class="col-xl-8 mb-4">
-                <div id="containment-wrapper">
-                    <img id="meme-pic" style="height: 100px; width:auto;" src="imgs/flower.png" alt="Flower Picture">
+                <div id="containment-wrapper" style="position: relative; height: 400px; border: 2px dashed #999;">
+                    <!-- Sparkle Canvas -->
+                    <canvas id="sparkle-canvas" width="100%" height="100%" style="position:absolute; top:0; left:0; pointer-events:none;"></canvas>
+                    <!-- Draggable Doge -->
+                    <img id="meme-pic" style="height: 100px; width:auto; position: relative; z-index:10;" 
+                        src="imgs/flower.png" alt="Flower Picture">
                 </div>
             </div>
-            <!--Score Panel-->
+
+            <!-- Score Panel -->
             <div class="col-sm-4">
                 <div class="score-box">
                     <h3 class="text-center">Score</h3>
@@ -38,30 +42,71 @@ ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="a
                     <hr>
                     <h5>Progress</h5>
                     <div class="progress mb-3">
-                        <div id="score-progress" class="progress-bar" role="progressbar" style="width: 0%;">
-                        </div>
+                        <div id="score-progress" class="progress-bar" role="progressbar" style="width: 0%;"></div>
                     </div>
                     <div class="alert alert-info mt-3" id="status-message">
                         Drag the Doge to Begin!
                     </div>
-                    <p class="small text-muted mt-4">Tip: Try dragging the flower near the edges. Something special might
-                        happen...</p>
+                    <p class="small text-muted mt-4">Tip: Try dragging the flower near the edges. Something special might happen...</p>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- jQuery & jQuery UI -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
     <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-
-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
-        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-    <!-- jQuery UI -->
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
-        integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Custom Script -->
     <script src="scripts/script.js"></script>
 
-</body>
+    <!-- Draggable + Sparkle Trail -->
+    <script>
+        $(function() {
+            // Make Doge draggable
+            $("#meme-pic").draggable({
+                containment: "#containment-wrapper",
+                scroll: false,
+                drag: function() {
+                    // Update score
+                    var pos = $(this).position();
+                    var score = Math.floor(pos.top + pos.left);
+                    $("#score-display").text(score);
+                    var percent = Math.min((score / 1000) * 100, 100);
+                    $("#score-progress").css("width", percent + "%");
 
+                    // Update status
+                    if (score < 300) {
+                        $("#status-message").text("Doge is warming up...");
+                    } else if (score < 600) {
+                        $("#status-message").text("Wow! Doge is gaining power!");
+                    } else if (score < 900) {
+                        $("#status-message").text("Much skill. Very drag. Wow.");
+                    } else {
+                        $("#status-message").text("MAXIMUM WOW ACHIEVED!");
+                    }
+
+                    // Create sparkle trail
+                    const trail = $("<div class='trail'></div>");
+                    trail.css({
+                        position: "absolute",
+                        top: pos.top + "px",
+                        left: pos.left + "px",
+                        width: 20 + Math.random() * 20 + "px",
+                        height: 20 + Math.random() * 20 + "px",
+                        borderRadius: "50%",
+                        background: "radial-gradient(circle, #ffb6c1, #ff1493)",
+                        opacity: 0.4 + Math.random() * 0.5,
+                        pointerEvents: "none",
+                        zIndex: 5
+                    });
+                    $("#containment-wrapper").append(trail);
+                    trail.animate({ opacity: 0 }, 600, function() { $(this).remove(); });
+                }
+            });
+        });
+    </script>
+
+</body>
 </html>
