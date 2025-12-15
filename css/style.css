@@ -1,0 +1,47 @@
+
+body {
+    background: linear-gradient(to bottom right, #ffe4f1, #ffc1dc);
+    font-family: 'Quicksand', Arial, sans-serif;
+    margin: 0;
+}
+
+
+#containment-wrapper {
+    position: relative;
+    height: 420px;
+    border: 3px dashed #d63384;
+    border-radius: 16px;
+    background: linear-gradient(to bottom, #fff0f7, #ffd6e9);
+    box-shadow: 0 6px 12px rgba(214, 51, 132, 0.25);
+}
+
+
+#meme-pic {
+    cursor: grab;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+#meme-pic:active {
+    cursor: grabbing;
+    transform: scale(1.05);
+}
+
+
+.score-box {
+    background: #ffffff;
+    padding: 22px;
+    border-radius: 14px;
+    box-shadow: 0 4px 8px rgba(214, 51, 132, 0.2);
+    border-left: 6px solid #d63384;
+}
+
+
+.navbar {
+    background-color: #ffe0ef;
+}
+
+.navbar-brand {
+    font-size: 20px;
+    font-weight: 700;
+    color: #c2185b !important;
+}
