@@ -27,7 +27,7 @@
                     <!-- Drag Trail Canvas -->
                     <canvas id="sparkle-canvas" width="100%" height="100%" style="position:absolute; top:0; left:0; pointer-events:none;"></canvas>
                     <!-- Draggable Flower -->
-                    <img id="meme-pic" src="imgs/flower.png" alt="Flower Picture" style="height:100px; width:auto;">
+                    <img id="flower-pic" src="imgs/flower.png" alt="Flower Picture" style="height:100px; width:auto;">
                 </div>
             </div>
             <div class="col-sm-4">
@@ -71,11 +71,11 @@
                     position: "absolute",
                     top: $(this).position().top + "px",
                     left: $(this).position().left + "px",
-                    width: 30 + Math.random() * 20 + "px",      // random size
-                    height: 30 + Math.random() * 20 + "px",
-                    borderRadius: "50%",
-                    background: "radial-gradient(circle, #ffb6c1, #ff1493)",
-                    opacity: 0.3 + Math.random() * 0.5,        // random opacity
+                    width: "30px",
+                    height: "30px",
+                    "border-radius": "50%",
+                    background: "#ff69b4",
+                    opacity: 0.5,
                     pointerEvents: "none"
                 });
                 $("#containment-wrapper").append(trail);
@@ -86,4 +86,3 @@
 
 </body>
 </html>
-
